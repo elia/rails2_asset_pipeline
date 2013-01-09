@@ -75,6 +75,7 @@ Rails2AssetPipeline::ViewHelpers.ignored_folders = ["images"]
 ```
 
 Optional: remove unnecessary Sass middleware + monkey-patches
+
 ```Ruby
 # config/environment.rb
 ...
@@ -102,7 +103,7 @@ Setup a config.ru so development has dynamic assets
 # we need to protect against multiple includes of the Rails environment (trust me)
 require './config/environment' if !defined?(Rails) || !Rails.initialized?
 
-instance_exec(&Rails2AssetPipeline.config_ru)
+Rails2AssetPipeline.config_ru(self)
 
 map '/' do
   use Rails::Rack::LogTailer unless Rails.env.test?
@@ -127,6 +128,7 @@ You can also use `Rails2AssetPipeline::ViewHelpers.asset_path("application.js")`
 
 ### Fast tests
 To not compile assets during testing you can overwrite the manifest.
+
 ```Ruby
 # spec/fixtures/empty_manifest.json
 {"assets": {}, "files": {}}
