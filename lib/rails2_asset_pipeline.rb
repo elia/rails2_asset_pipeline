@@ -49,12 +49,12 @@ module Rails2AssetPipeline
   end
 
   def self.manifest
-    @manifest ||= "#{Rails.root}/public/assets/manifest.json"
+    @manifest ||= Dir["#{Rails.root}/public/#{prefix}/manifest*.json"].first
   end
 
   def self.warn_user_about_misconfiguration!
     return unless Rails2AssetPipeline.static?
-    return if @manifest_exists ||= File.exist?(manifest)
+    return if @manifest_exists ||= manifest
 
     config = "config.ru.example"
     if File.exist?(config) and File.read(config).include?("Rails2AssetPipeline.config_ru")
