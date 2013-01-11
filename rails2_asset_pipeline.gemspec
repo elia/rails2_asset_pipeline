@@ -10,4 +10,8 @@ Gem::Specification.new name, Rails2AssetPipeline::VERSION do |s|
   s.files = `git ls-files`.split("\n")
   s.license = 'MIT'
   s.add_runtime_dependency "sprockets"
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'json'
+  s.add_development_dependency 'rspec', '~> 2'
+  s.add_development_dependency 'bump'
 end
