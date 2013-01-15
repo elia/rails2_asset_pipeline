@@ -52,6 +52,12 @@ describe Rails2AssetPipeline do
       @mapped.should == nil
       (!!result).should == false
     end
+
+    it 'respects the prefix' do
+      Rails2AssetPipeline.prefix = 'static-assets'
+      instance_exec(&Rails2AssetPipeline.config_ru)
+      @mapped.should == ["/static-assets"]
+    end
   end
 
   describe ".manifest" do
@@ -88,6 +94,17 @@ describe Rails2AssetPipeline do
 
     it "returns yielded" do
       Rails2AssetPipeline.with_dynamic_assets_available(false){ 5 }.should == 5
+    end
+  end
+
+  describe '.prefix' do
+    it 'can be set' do
+      Rails2AssetPipeline.prefix = "xxx"
+      Rails2AssetPipeline.prefix.should == "xxx"
+    end
+
+    it 'is there' do
+      Rails2AssetPipeline.prefix.should == 'assets'
     end
   end
 end

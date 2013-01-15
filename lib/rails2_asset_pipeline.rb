@@ -5,7 +5,6 @@ module Rails2AssetPipeline
   STATIC_ENVIRONMENTS = ["production", "staging"]
 
   class << self
-    @prefix = 'assets'
     attr_accessor :dynamic_assets_available, :manifest, :prefix
   end
 
@@ -23,12 +22,12 @@ module Rails2AssetPipeline
     @env
   end
 
-  def self.config_ru(rack)
-    unless STATIC_ENVIRONMENTS.include?(Rails.env)
-      Rails2AssetPipeline.dynamic_assets_available = true
-      prefix = Rails2AssetPipeline.prefix
+  def self.config_ru
+    lambda do
+      unless STATIC_ENVIRONMENTS.include?(Rails.env)
+        prefix = Rails2AssetPipeline.prefix
 
-      rack.instance_eval do
+        Rails2AssetPipeline.dynamic_assets_available = true
         map "/#{prefix}" do
           run Rails2AssetPipeline.env
         end
@@ -50,6 +49,10 @@ module Rails2AssetPipeline
 
   def self.manifest
     @manifest ||= Dir["#{Rails.root}/public/#{prefix}/manifest*.json"].first
+  end
+
+  def self.prefix
+    @prefix ||= 'assets'
   end
 
   def self.warn_user_about_misconfiguration!
