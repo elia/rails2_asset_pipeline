@@ -22,13 +22,14 @@ module Rails2AssetPipeline
     @env
   end
 
-  def self.config_ru
-    lambda do
-      unless STATIC_ENVIRONMENTS.include?(Rails.env)
-        prefix = Rails2AssetPipeline.prefix
+  def self.config_ru(rack)
+    unless STATIC_ENVIRONMENTS.include?(Rails.env)
+      prefix = Rails2AssetPipeline.prefix
 
-        Rails2AssetPipeline.dynamic_assets_available = true
-        map "/#{prefix}" do
+      Rails2AssetPipeline.dynamic_assets_available = true
+
+      rack.instance_eval do
+        map "/assets" do
           run Rails2AssetPipeline.env
         end
       end
