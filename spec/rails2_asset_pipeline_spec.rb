@@ -77,7 +77,7 @@ describe Rails2AssetPipeline do
 
       before { run "rm -rf #{rails_root}/public/assets" }
 
-      it "is there", :focus do
+      it "is there" do
         write manifest_path, '{}'
         Rails2AssetPipeline.manifest.should == manifest_path
       end
