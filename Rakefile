@@ -1,8 +1,8 @@
+require 'bundler/setup'
 require 'bundler/gem_tasks'
 
-task :default do
-  sh "rspec spec/"
-end
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new :default
 
 # extracted from https://github.com/grosser/project_template
 rule /^version:bump:.*/ do |t|
