@@ -66,8 +66,21 @@ describe Rails2AssetPipeline do
       Rails2AssetPipeline.manifest.should == "xxx"
     end
 
-    it "is there" do
-      Rails2AssetPipeline.manifest.should =~ %r{/spec/fake_rails/public/assets/manifest.json$}
+    it "isn't there if the file is missing" do
+      Rails2AssetPipeline.manifest.should == nil
+    end
+
+    context 'when the file is present' do
+      let(:rails_root)    { "#{File.dirname __FILE__}/fake_rails" }
+      let(:base_path)     { "#{rails_root}/public/assets/manifest" }
+      let(:manifest_path) { "#{base_path}-#{rand(1000)}.json" }
+
+      before { run "rm -rf #{rails_root}/public/assets" }
+
+      it "is there", :focus do
+        write manifest_path, '{}'
+        Rails2AssetPipeline.manifest.should == manifest_path
+      end
     end
   end
 
