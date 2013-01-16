@@ -29,7 +29,7 @@ module Rails2AssetPipeline
       Rails2AssetPipeline.dynamic_assets_available = true
 
       rack.instance_eval do
-        map "/assets" do
+        map "/#{prefix}" do
           run Rails2AssetPipeline.env
         end
       end
